@@ -1,0 +1,36 @@
+name: Push to release workflow
+
+on:
+  push:
+    branches: [release]
+
+jobs:
+  create-tag:
+    name: Create Tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch "release"
+        uses: actions/checkout@v2
+        with:
+          ref: 'release'
+      - name: Create new tag
+        id: new_tag
+        run: |
+            today=$(date "+%Y%m%d")
+            baseName="release/${today}"
+
+            git fetch --tags
+
+            number=1
+            while git tag -l | grep ${baseName}_${number} > /dev/null; do
+              number=$((number + 1))
+            done
+
+            tag="${baseName}_${number}"
+
+            echo "::set-output name=tag::${tag}"
+      - name: Tag snapshot
+        uses: tvdias/github-tagger@v0.0.1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.new_tag.outputs.tag }}

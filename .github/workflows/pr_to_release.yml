@@ -1,0 +1,16 @@
+name: PR to release workflow
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches: [release]
+
+jobs:
+  example:
+    name: Release management
+    runs-on: ubuntu-latest
+    steps:
+      - name: List merged pull requests on source branch
+        uses: tiwanari/list-merged-pull-requests@master
+        with:
+          token: ${{ github.token }}
