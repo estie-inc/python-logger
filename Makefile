@@ -3,16 +3,15 @@ run:
 	docker-compose up -d
 stop:
 	docker-compose down
-# `python-template` below should be renamed according to the corresponding service name in docker-compose.yml
 enter:
-	docker-compose exec python-template /bin/bash
+	docker-compose exec pylogger /bin/bash
 start:
-	docker-compose exec python-template pipenv run start
+	docker-compose exec pylogger pipenv run start
 test:
-	docker-compose exec python-template pipenv run test
+	docker-compose exec pylogger pipenv run test
 lint:
-	docker-compose exec python-template pipenv run lint
+	docker-compose exec pylogger pipenv run lint
 format:
-	docker-compose exec python-template pipenv run format
+	docker-compose exec pylogger pipenv run format
 log:
-	docker-compose logs -f python-template
+	docker-compose logs -f pylogger
