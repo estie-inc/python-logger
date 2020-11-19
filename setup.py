@@ -1,16 +1,14 @@
-# -*- coding: utf-8 -*-
+from setuptools import find_packages, setup
 
-from setuptools import setup, find_packages
-
-with open('README.md') as f:
+with open("README.md") as f:
     readme = f.read()
 
 # See Pipfile for checking dependencies
 setup(
-    name='python-repository-template',
-    version='0.1.0',
-    description='fill me',
+    name="pylogger",
+    version="0.0.1",
+    description="Python logger for every project using Python.",
     long_description=readme,
-    url='https://github.com/estie-inc/rename_me',
-    packages=find_packages(exclude=('tests', 'docs'))
+    url="https://github.com/estie-inc/python-logger",
+    packages=find_packages(exclude=("tests", "docs")),
 )
