@@ -13,7 +13,7 @@ _DEPTH_RECURSION_JSON_LOGGER = 3
 
 _LOGGING_LEVEL = logging.INFO if not __debug__ else logging.DEBUG
 _FORMATTER_STR_DETAILED = (
-    "%(asctime)s (PID:%(process)d) %(levelname)s %(name)s  %(message)s"
+    "%(asctime)s (PID:%(process)d) %(levelname)s %(name)s %(message)s"
 )
 _FORMATTER_STR = _FORMATTER_STR_DETAILED
 
@@ -117,7 +117,7 @@ def _logging_decorator(
     return wrapper
 
 
-@_logging_decorator(is_custom_handler=False)
+@_logging_decorator()
 def get_logger(name: str):
     """Gets a logger with the name.
 
@@ -183,7 +183,7 @@ def json_logger(
     module_name=None,
     class_name=None,
     depth_recursion=2,
-    message=None,
+    msg=None,
 ):
     get_logger(
         get_method_name(
@@ -191,66 +191,66 @@ def json_logger(
             class_name=class_name,
             depth_recursion=depth_recursion,
         )
-    ).log(level=level, message=message)
+    ).log(level=level, msg=msg)
     get_logger(
         get_method_name(
             module_name=module_name,
             class_name=class_name,
             depth_recursion=depth_recursion,
         )
-    ).log(level=level, message=_json_dumps(json_items))
+    ).log(level=level, msg=_json_dumps(json_items))
 
 
-def json_logger_debug(json_items, module_name=None, class_name=None, message=None):
+def json_logger_debug(json_items, module_name=None, class_name=None, msg=None):
     json_logger(
         level=logging.DEBUG,
         json_items=json_items,
         module_name=module_name,
         class_name=class_name,
         depth_recursion=_DEPTH_RECURSION_JSON_LOGGER,
-        message=message,
+        msg=msg,
     )
 
 
-def json_logger_info(json_items, module_name=None, class_name=None, message=None):
+def json_logger_info(json_items, module_name=None, class_name=None, msg=None):
     json_logger(
         level=logging.INFO,
         json_items=json_items,
         module_name=module_name,
         class_name=class_name,
         depth_recursion=_DEPTH_RECURSION_JSON_LOGGER,
-        message=message,
+        msg=msg,
     )
 
 
-def json_logger_warning(json_items, module_name=None, class_name=None, message=None):
+def json_logger_warning(json_items, module_name=None, class_name=None, msg=None):
     json_logger(
         level=logging.WARNING,
         json_items=json_items,
         module_name=module_name,
         class_name=class_name,
         depth_recursion=_DEPTH_RECURSION_JSON_LOGGER,
-        message=message,
+        msg=msg,
     )
 
 
-def json_logger_error(json_items, module_name=None, class_name=None, message=None):
+def json_logger_error(json_items, module_name=None, class_name=None, msg=None):
     json_logger(
         level=logging.ERROR,
         json_items=json_items,
         module_name=module_name,
         class_name=class_name,
         depth_recursion=_DEPTH_RECURSION_JSON_LOGGER,
-        message=message,
+        msg=msg,
     )
 
 
-def json_logger_critical(json_items, module_name=None, class_name=None, message=None):
+def json_logger_critical(json_items, module_name=None, class_name=None, msg=None):
     json_logger(
         level=logging.CRITICAL,
         json_items=json_items,
         module_name=module_name,
         class_name=class_name,
         depth_recursion=_DEPTH_RECURSION_JSON_LOGGER,
-        message=message,
+        msg=msg,
     )
