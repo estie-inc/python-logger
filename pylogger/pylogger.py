@@ -51,9 +51,9 @@ def get_method_name(
 
     if module_name is None and class_name is None:
         return method_name
-    elif class_name is not None:
+    elif module_name is None:
         return f"{class_name}.{method_name}"
-    elif module_name is not None:
+    elif class_name is None:
         return f"{module_name}.{method_name}"
     else:
         return f"{module_name}.{class_name}.{method_name}"
