@@ -40,8 +40,6 @@ def get_method_name(
     if depth_recursion < 1:
         raise ValueError(f"depth_recursion is not natural number. - {depth_recursion}")
 
-    name = None
-
     f_stack = inspect.currentframe()
     for _ in range(depth_recursion):
         f_stack = f_stack.f_back
@@ -52,14 +50,13 @@ def get_method_name(
     method_name = f_stack.f_code.co_name
 
     if module_name is None and class_name is None:
-        name = method_name
+        return method_name
     elif class_name is not None:
-        name = f"{class_name}.{method_name}"
+        return f"{class_name}.{method_name}"
     elif module_name is not None:
-        name = f"{module_name}.{method_name}"
+        return f"{module_name}.{method_name}"
     else:
-        name = f"{module_name}.{class_name}.{method_name}"
-    return name
+        return f"{module_name}.{class_name}.{method_name}"
 
 
 def _logging_base_decorator(func_logging_decorator: Callable) -> Callable:
