@@ -25,6 +25,5 @@ RUN pip install poetry
 COPY pyproject.toml poetry.lock $APP_ROOT
 
 RUN poetry config virtualenvs.create false \
-    && poetry install
-
-ENTRYPOINT []
+    && poetry install \
+    && pip install --upgrade pip
