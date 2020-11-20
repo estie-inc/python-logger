@@ -13,7 +13,7 @@ _DEPTH_RECURSION_JSON_LOGGER = 3
 
 _LOGGING_LEVEL = logging.INFO if not __debug__ else logging.DEBUG
 _FORMATTER_STR_DETAILED = (
-    "%(asctime)s (PID:%(process)d) %(levelname)s %(name)s %(message)s"
+    "%(asctime)s (PID:%(process)d) %(levelname)s %(name)s: %(message)s"
 )
 _FORMATTER_STR = _FORMATTER_STR_DETAILED
 
