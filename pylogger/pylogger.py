@@ -2,7 +2,7 @@ import datetime
 import inspect
 import json
 import logging
-from typing import Callable
+from typing import Callable, Dict, List, Union
 
 _JSON_INDENT = 4
 _JSON_SEPERATORS = (",", ": ")
@@ -22,7 +22,7 @@ def get_method_name(
     module_name: str = None,
     class_name: str = None,
     depth_recursion: int = _DEPTH_RECURSION_DEFAULT,
-):
+) -> str:
     """Retrieves a method name with a module name and class name.
 
     :param module_name: Module name
@@ -62,7 +62,7 @@ def get_method_name(
     return name
 
 
-def _logging_base_decorator(func_logging_decorator: Callable):
+def _logging_base_decorator(func_logging_decorator: Callable) -> Callable:
     """Decorator Function with Parameters.
 
     :param func_logging_system: Function object for Decoration
@@ -84,7 +84,7 @@ def _logging_base_decorator(func_logging_decorator: Callable):
 @_logging_base_decorator
 def _logging_decorator(
     func_get_logger: Callable, level: int = _LOGGING_LEVEL, is_propagate: bool = False
-):
+) -> Callable:
     """Decorator Function for Python Logging.
 
     :param func_get_logger: Function object for Decoration
@@ -118,28 +118,30 @@ def _logging_decorator(
 
 
 @_logging_decorator()
-def get_logger(name: str):
+def get_logger(name: str) -> logging.Logger:
     """Gets a logger with the name.
 
     :param name: Name of the logger
     :type name: str
 
     :return Logger
-    :rtype: object
+    :rtype: logging.Logger
     """
     return logging.getLogger(name=name)
 
 
-def get_default_logger():
+def get_default_logger() -> logging.Logger:
     """Gets a logger with the method name.
 
     :return Logger
-    :rtype: object
+    :rtype: logging.Logger
     """
     return get_logger(name=get_method_name(depth_recursion=_DEPTH_RECURSION_GET_LOGGER))
 
 
-def get_class_default_logger(class_name: str, module_name: str = None):
+def get_class_default_logger(
+    class_name: str, module_name: str = None
+) -> logging.Logger:
     """Gets a logger with the class name.
 
     :param class_name: Class name.
@@ -149,7 +151,7 @@ def get_class_default_logger(class_name: str, module_name: str = None):
     :type class_name: str
 
     :return Logger
-    :rtype: object
+    :rtype: logging.Logger
     """
     return get_logger(
         name=get_method_name(
@@ -160,13 +162,29 @@ def get_class_default_logger(class_name: str, module_name: str = None):
     )
 
 
-def _json_serialize(obj: object):
+def _json_serialize(obj: object) -> str:
+    """Serializes the given object
+
+    :param obj: obj
+    :type obj: object
+
+    :return iso-formatted obj
+    :rtype: str
+    """
     if isinstance(obj, (datetime.datetime, datetime.date)):
         return obj.isoformat()
     raise TypeError(f"Type {type(obj)} not serializable")
 
 
-def _json_dumps(json_items):
+def _json_dumps(json_items: Union[List[object], Dict[object, object]]) -> str:
+    """Dumps as a JSON format.
+
+    :param json_items: Items to be converted to a JSON format.
+    :type json_items: list or dict
+
+    :return JSON formatted items.
+    :rtype: str
+    """
     return json.dumps(
         json_items,
         indent=_JSON_INDENT,
@@ -178,13 +196,33 @@ def _json_dumps(json_items):
 
 
 def json_logger(
-    level,
-    json_items,
-    module_name=None,
-    class_name=None,
-    depth_recursion=2,
-    msg=None,
-):
+    level: int,
+    json_items: Union[List[object], Dict[object, object]],
+    module_name: str = None,
+    class_name: str = None,
+    depth_recursion: int = 2,
+    msg: str = None,
+) -> None:
+    """Logs the given json string.
+
+    :param level: Logging level.
+    :type level: int
+
+    :param json_items: Items to be converted to a JSON format.
+    :type json_items: list or dict
+
+    :param module_name: Module name.
+    :type module_name: str
+
+    :param class_name: Class name.
+    :type class_name: str
+
+    :param depth_recursion: Depth recursion.
+    :type depth_recursion: int
+
+    :param msg: Logging message.
+    :type msg: str
+    """
     get_logger(
         get_method_name(
             module_name=module_name,
@@ -201,7 +239,26 @@ def json_logger(
     ).log(level=level, msg=_json_dumps(json_items))
 
 
-def json_logger_debug(json_items, module_name=None, class_name=None, msg=None):
+def json_logger_debug(
+    json_items: Union[List[object], Dict[object, object]],
+    module_name: str = None,
+    class_name: str = None,
+    msg: str = None,
+) -> None:
+    """Logs the given json string as DEBUG.
+
+    :param json_items: Items to be converted to a JSON format.
+    :type json_items: list or dict
+
+    :param module_name: Module name.
+    :type module_name: str
+
+    :param class_name: Class name.
+    :type class_name: str
+
+    :param msg: Logging message.
+    :type msg: str
+    """
     json_logger(
         level=logging.DEBUG,
         json_items=json_items,
@@ -212,7 +269,26 @@ def json_logger_debug(json_items, module_name=None, class_name=None, msg=None):
     )
 
 
-def json_logger_info(json_items, module_name=None, class_name=None, msg=None):
+def json_logger_info(
+    json_items: Union[List[object], Dict[object, object]],
+    module_name: str = None,
+    class_name: str = None,
+    msg: str = None,
+) -> None:
+    """Logs the given json string as INFO.
+
+    :param json_items: Items to be converted to a JSON format.
+    :type json_items: list or dict
+
+    :param module_name: Module name.
+    :type module_name: str
+
+    :param class_name: Class name.
+    :type class_name: str
+
+    :param msg: Logging message.
+    :type msg: str
+    """
     json_logger(
         level=logging.INFO,
         json_items=json_items,
@@ -223,7 +299,26 @@ def json_logger_info(json_items, module_name=None, class_name=None, msg=None):
     )
 
 
-def json_logger_warning(json_items, module_name=None, class_name=None, msg=None):
+def json_logger_warning(
+    json_items: Union[List[object], Dict[object, object]],
+    module_name: str = None,
+    class_name: str = None,
+    msg: str = None,
+) -> None:
+    """Logs the given json string as WARNING.
+
+    :param json_items: Items to be converted to a JSON format.
+    :type json_items: list or dict
+
+    :param module_name: Module name.
+    :type module_name: str
+
+    :param class_name: Class name.
+    :type class_name: str
+
+    :param msg: Logging message.
+    :type msg: str
+    """
     json_logger(
         level=logging.WARNING,
         json_items=json_items,
@@ -234,7 +329,26 @@ def json_logger_warning(json_items, module_name=None, class_name=None, msg=None)
     )
 
 
-def json_logger_error(json_items, module_name=None, class_name=None, msg=None):
+def json_logger_error(
+    json_items: Union[List[object], Dict[object, object]],
+    module_name: str = None,
+    class_name: str = None,
+    msg: str = None,
+) -> None:
+    """Logs the given json string as ERROR.
+
+    :param json_items: Items to be converted to a JSON format.
+    :type json_items: list or dict
+
+    :param module_name: Module name.
+    :type module_name: str
+
+    :param class_name: Class name.
+    :type class_name: str
+
+    :param msg: Logging message.
+    :type msg: str
+    """
     json_logger(
         level=logging.ERROR,
         json_items=json_items,
@@ -245,7 +359,26 @@ def json_logger_error(json_items, module_name=None, class_name=None, msg=None):
     )
 
 
-def json_logger_critical(json_items, module_name=None, class_name=None, msg=None):
+def json_logger_critical(
+    json_items: Union[List[object], Dict[object, object]],
+    module_name: str = None,
+    class_name: str = None,
+    msg: str = None,
+) -> None:
+    """Logs the given json string as CRITICAL.
+
+    :param json_items: Items to be converted to a JSON format.
+    :type json_items: list or dict
+
+    :param module_name: Module name.
+    :type module_name: str
+
+    :param class_name: Class name.
+    :type class_name: str
+
+    :param msg: Logging message.
+    :type msg: str
+    """
     json_logger(
         level=logging.CRITICAL,
         json_items=json_items,
