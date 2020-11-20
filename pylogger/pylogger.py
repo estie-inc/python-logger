@@ -40,6 +40,7 @@ def get_method_name(
     if depth_recursion < 1:
         raise ValueError(f"depth_recursion is not natural number. - {depth_recursion}")
 
+    # Gets an appropriate frame stack where the logger is called.
     f_stack = inspect.currentframe()
     for _ in range(depth_recursion):
         f_stack = f_stack.f_back
