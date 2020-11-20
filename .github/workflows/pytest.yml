@@ -9,10 +9,6 @@ jobs:
     steps:
     - name: Checkout source code
       uses: actions/checkout@v1
-    - name: Add SSH Private Key for Private Repo Installation
-      uses: webfactory/ssh-agent@v0.4.0
-      with:
-        ssh-private-key: ${{ secrets.ESTIE_GITHUB_SSH_KEY }}
     - name: Set up Python 3.8.1
       uses: actions/setup-python@v2
       with:
