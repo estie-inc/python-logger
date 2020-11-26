@@ -20,7 +20,7 @@ ENV LANG ja_JP.UTF-8
 ENV APP_ROOT /var/app/
 WORKDIR $APP_ROOT
 
-RUN pip install --upgrade pip  \
+RUN pip install --upgrade pip \
     && pip install poetry
 
 COPY pyproject.toml poetry.lock $APP_ROOT
