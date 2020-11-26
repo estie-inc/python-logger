@@ -1,15 +1,14 @@
 version: '3.1'
 services:
-  python-template:
-    container_name: python_template
+  python-logger:
+    container_name: pylogger
     build:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ./.flake8:/var/app/.flake8
+      - ./setup.cfg:/var/app/setup.cfg
       - ./tests:/var/app/tests
-      - ./main.py:/var/app/main.py
-      - ./reaname_me:/var/app/rename_me
+      - ./pylogger:/var/app/pylogger
     ports:
       - 5000:5000
     environment:

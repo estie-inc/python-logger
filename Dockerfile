@@ -1,4 +1,4 @@
-FROM python:3.8.1
+FROM python:3.7
 
 # Set timezone to JST
 ENV TZ Asia/Tokyo
@@ -20,9 +20,10 @@ ENV LANG ja_JP.UTF-8
 ENV APP_ROOT /var/app/
 WORKDIR $APP_ROOT
 
-RUN pip install --upgrade pip && pip install pipenv
+RUN pip install --upgrade pip \
+    && pip install poetry
 
-COPY Pipfile $APP_ROOT
-COPY Pipfile.lock $APP_ROOT
+COPY pyproject.toml poetry.lock $APP_ROOT
 
-RUN pipenv sync --dev
+RUN poetry config virtualenvs.create false \
+    && poetry install
